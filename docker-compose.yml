@@ -1,0 +1,33 @@
+name: news-express
+
+services:
+  api:
+    build: ./news-express
+    ports:
+      - 5002:5002
+    restart: always
+    env_file:
+      - ./news-express/.env
+    environment:
+      - PORT=5002
+  spa:
+    build:
+      context: ./spa-news-express
+      args:
+        VITE_API_URL: /api
+    depends_on:
+      - api
+    volumes:
+      - spa-volume:/var/www/html
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    volumes:
+      - spa-volume:/var/www/html
+    depends_on:
+      - api
+      - spa
+
+volumes:
+  spa-volume:
