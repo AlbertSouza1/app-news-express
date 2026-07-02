@@ -3,8 +3,6 @@ name: news-express
 services:
   api:
     build: ./news-express
-    ports:
-      - 5002:5002
     restart: always
     env_file:
       - ./news-express/.env
